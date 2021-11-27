@@ -1,12 +1,12 @@
 <template>
   <div id="nav">
-    <router-link to="/"> Home</router-link> |
-    <router-link to="/about">About</router-link>
+    {{ $store.state.name }}
+    <router-link to="/"> login</router-link> |
+    <router-link to="/main">main</router-link>
+    <el-button>xxx</el-button>
   </div>
   <router-view />
 </template>
-
-// sadf
 <style lang="less">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
