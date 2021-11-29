@@ -67,7 +67,7 @@ class HYRequest {
       }
     );
   }
-  request<T = any>(config: HYRequestConfig): Promise<T> {
+  request<T = any>(config: HYRequestConfig<T>): Promise<T> {
     return new Promise((reslove, reject) => {
       if (config.interceptors?.requestInterceptor) {
         config = config.interceptors.requestInterceptor(config);
@@ -79,7 +79,7 @@ class HYRequest {
         .request<any, T>(config)
         .then((res) => {
           if (config.interceptors?.responseInterceptor) {
-            // res = config.interceptors.responseInterceptor(res);
+            res = config.interceptors.responseInterceptor(res);
           }
           console.log(res);
           this.showLoading = true;
