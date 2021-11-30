@@ -1,107 +1,109 @@
 import axios from 'axios';
-import type { AxiosInstance } from 'axios';
-import type { HYRequestInterceptors, HYRequestConfig } from './types';
+import type { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
 import { ElLoading, ILoadingInstance } from 'element-plus';
-// import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type';
+
+interface InterceptorHooks {
+  requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig;
+  requestInterceptorCatch?: (error: any) => any;
+
+  responseInterceptor?: (response: AxiosResponse) => AxiosResponse;
+  responseInterceptorCatch?: (error: any) => any;
+}
+
+interface HYRequestConfig extends AxiosRequestConfig {
+  showLoading?: boolean;
+  interceptorHooks?: InterceptorHooks;
+}
+
+interface HYData<T> {
+  data: T;
+  returnCode: string;
+  success: boolean;
+}
+
 class HYRequest {
-  instance: AxiosInstance;
+  config: AxiosRequestConfig;
+  interceptorHooks?: InterceptorHooks;
   showLoading: boolean;
-  interceptors?: HYRequestInterceptors;
   loading?: ILoadingInstance;
+  instance: AxiosInstance;
 
-  constructor(config: HYRequestConfig) {
-    this.instance = axios.create(config);
-    this.interceptors = config.interceptors;
-    this.showLoading = config.showLoading ?? false;
+  constructor(options: HYRequestConfig) {
+    this.config = options;
+    this.interceptorHooks = options.interceptorHooks;
+    this.showLoading = options.showLoading ?? true;
+    this.instance = axios.create(options);
+
+    this.setupInterceptor();
+  }
+
+  setupInterceptor(): void {
     this.instance.interceptors.request.use(
-      this.interceptors?.requestInterceptor,
-      this.interceptors?.requestInterceptorCatch
+      this.interceptorHooks?.requestInterceptor,
+      this.interceptorHooks?.requestInterceptorCatch
     );
-
     this.instance.interceptors.response.use(
-      this.interceptors?.responseInterceptor,
-      this.interceptors?.responseInterceptorCatch
+      this.interceptorHooks?.responseInterceptor,
+      this.interceptorHooks?.responseInterceptorCatch
     );
-    // 添加所有实例都有的拦截器
-    this.instance.interceptors.request.use(
-      (config) => {
-        console.log('请求成功');
-        if (this.showLoading) {
-          this.loading = ElLoading.service({
-            lock: true,
-            text: '正在请求数据...'
-          });
-        }
-        return config;
-      },
-      (err) => {
-        console.log('请求失败');
-        ElLoading;
-        return err;
+
+    this.instance.interceptors.request.use((config) => {
+      if (this.showLoading) {
+        this.loading = ElLoading.service({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
       }
-    );
+      return config;
+    });
+
     this.instance.interceptors.response.use(
-      (response) => {
+      (res) => {
         this.loading?.close();
-        const data = response.data;
-        if (data.returnCode === '-1001') {
-          console.log('请求失败');
-        } else {
-          return data;
-        }
+        return res;
       },
       (err) => {
         this.loading?.close();
-        if (err.response.status === 404) {
-          console.log('404');
-        }
-        // switch (key) {
-        //   case value:
-
-        //     break;
-
-        //   default:
-        //     break;
-        // }
         return err;
       }
     );
   }
-  request<T = any>(config: HYRequestConfig<T>): Promise<T> {
-    return new Promise((reslove, reject) => {
-      if (config.interceptors?.requestInterceptor) {
-        config = config.interceptors.requestInterceptor(config);
-      }
-      if (config.showLoading === false) {
-        this.showLoading = false;
-      }
+
+  request<T = any>(config: HYRequestConfig): Promise<T> {
+    if (!config.showLoading) {
+      this.showLoading = false;
+    }
+    return new Promise((resolve, reject) => {
       this.instance
-        .request<any, T>(config)
+        .request<any, HYData<T>>(config)
         .then((res) => {
-          if (config.interceptors?.responseInterceptor) {
-            res = config.interceptors.responseInterceptor(res);
-          }
-          console.log(res);
+          resolve(res.data);
           this.showLoading = true;
-          reslove(res);
         })
         .catch((err) => {
-          this.showLoading = false;
           reject(err);
+          this.showLoading = true;
         });
     });
   }
-  get<T>(config: HYRequestConfig): Promise<T> {
-    return this.request<T>({ ...config, method: 'GET' });
+
+  get<T = any>(config: HYRequestConfig): Promise<T> {
+    return this.request({ ...config, method: 'GET' });
   }
-  post<T>(config: HYRequestConfig): Promise<T> {
-    return this.request<T>({ ...config, method: 'POST' });
+
+  post<T = any>(config: HYRequestConfig): Promise<T> {
+    return this.request({ ...config, method: 'POST' });
   }
-  delete<T>(config: HYRequestConfig): Promise<T> {
-    return this.request<T>({ ...config, method: 'DELETE' });
+
+  delete<T = any>(config: HYRequestConfig): Promise<T> {
+    return this.request({ ...config, method: 'DELETE' });
   }
-  patch<T>(config: HYRequestConfig): Promise<T> {
-    return this.request<T>({ ...config, method: 'PATCH' });
+
+  patch<T = any>(config: HYRequestConfig): Promise<T> {
+    return this.request({ ...config, method: 'PATCH' });
   }
 }
+
 export default HYRequest;

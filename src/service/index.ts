@@ -1,26 +1,33 @@
-// service 统一出口
 import HYRequest from './request';
-import { BASE_URL, TIME_OUT } from './request/config';
-export default new HYRequest({
-  baseURL: BASE_URL,
-  timeout: TIME_OUT,
-  interceptors: {
-    requestInterceptor: (config) => {
-      const token = '';
-      if (token) {
-        // config.headers.Authorization = `Bearer ${token}`;
-      }
+import { API_BASE_URL, TIME_OUT } from './request/config';
+import localCache from '../utils/cache';
 
+const hyRequest = new HYRequest({
+  baseURL: API_BASE_URL,
+  timeout: TIME_OUT,
+  interceptorHooks: {
+    requestInterceptor: (config) => {
+      const token = localCache.getCache('token');
+      if (token) {
+        if (!config?.headers) {
+          throw new Error(
+            `Expected 'config' and 'config.headers' not to be undefined`
+          );
+        }
+        config.headers.Authorization = `Bearer ${token}`;
+      }
       return config;
     },
     requestInterceptorCatch: (err) => {
       return err;
     },
     responseInterceptor: (res) => {
-      return res;
+      return res.data;
     },
     responseInterceptorCatch: (err) => {
       return err;
     }
   }
 });
+
+export default hyRequest;
