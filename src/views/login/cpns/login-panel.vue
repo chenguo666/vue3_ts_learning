@@ -8,7 +8,7 @@
             <el-icon><User /></el-icon>账号登录
           </span>
         </template>
-        <loginaccount />
+        <loginaccount ref="accountRef" />
       </el-tab-pane>
       <el-tab-pane>
         <template #label>
@@ -43,12 +43,15 @@ export default defineComponent({
   },
   setup() {
     const isKeepPassword = ref(true);
+    const accountRef = ref<InstanceType<typeof loginaccount>>();
     const handleLoginClick = () => {
-      console.log(132);
+      console.log(132, accountRef.value);
+      accountRef.value?.loginAction();
     };
     return {
       isKeepPassword,
-      handleLoginClick
+      handleLoginClick,
+      accountRef
     };
   }
 });
