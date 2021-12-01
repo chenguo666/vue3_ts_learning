@@ -30,9 +30,13 @@ export default defineComponent({
       name: '',
       password: ''
     });
+    const loginAction = (isKeepPassword: boolean) => {
+      console.log(isKeepPassword);
+    };
 
     return {
       account,
+      loginAction,
       rules
     };
   }

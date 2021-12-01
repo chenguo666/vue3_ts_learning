@@ -5,6 +5,36 @@
 11.29 34 封装 axios
 11.30 35 登录 封装 ts
 
+
+
+
+settings
+{
+    "security.workspace.trust.untrustedFiles": "open",
+    "eslint.autoFixOnSave": true,
+    "eslint.validate": [
+        "javascript",{
+            "language": "vue",
+            "autoFix": true
+        },"html",
+        "vue"
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.fontSize": 16,
+    "powermode.enabled": true,
+    "powermode.presets": "flames",
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+}
+
+
+
+
+
+
 vue 骚操作
 缓存架构
 api 数据缓存
