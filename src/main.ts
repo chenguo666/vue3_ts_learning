@@ -8,8 +8,12 @@ import 'element-plus/dist/index.css';
 // import hyRequest from './service';
 import 'normalize.css';
 import './assets/css/index.less';
+import { setupStore } from '@/store';
 
-createApp(App).use(store).use(router).use(ElementPlus).mount('#app');
+const app = createApp(App);
+app.use(store).use(router).use(ElementPlus);
+setupStore();
+app.mount('#app');
 // interface DataType {
 //   data: any;
 //   returnCode: string;
