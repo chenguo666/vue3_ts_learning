@@ -1,6 +1,6 @@
 <template>
-  <div class="user">
-    <h2>user</h2>
+  <div class="department">
+    <h2>department</h2>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'user',
+  name: 'department',
   setup() {
     return {};
   }
