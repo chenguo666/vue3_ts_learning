@@ -1,3 +1,6 @@
-// export default registerApp (app:any):void {
+import { App } from 'vue';
+import registerElement from './register-element';
 
-// }
+export function globalRegister(app: App): void {
+  app.use(registerElement);
+}

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { AxiosRequestConfig, AxiosInstance, AxiosResponse } from 'axios';
-import { ElLoading, ILoadingInstance } from 'element-plus';
+import { ElLoading } from 'element-plus';
+import { ILoadingInstance } from 'element-plus/lib/el-loading/src/loading.type';
 
 interface InterceptorHooks {
   requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig;
