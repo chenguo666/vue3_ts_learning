@@ -8,6 +8,7 @@ import {
 } from '@/service/login/login';
 import localCache from '@/utils/cache';
 import { IAccount } from '@/service/login/types';
+import { mapMenusToRoutes } from '@/utils/map-menu';
 import router from '@/router';
 const loginModule: Module<ILoginState, IRootState> = {
   namespaced: true,
@@ -28,6 +29,12 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenu: any) {
       state.userMenu = userMenu;
+      // 映射 routes
+      const routes = mapMenusToRoutes(userMenu);
+      console.log('routes', routes);
+      routes.forEach((route) => {
+        router.addRoute('main', route);
+      });
     }
   },
   actions: {

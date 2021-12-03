@@ -1,6 +1,6 @@
 <template>
-  <div class="chat">
-    <h2>chat</h2>
+  <div class="dashboard">
+    <h2>404</h2>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'chat',
+  name: 'dashboard',
   setup() {
     return {};
   }
