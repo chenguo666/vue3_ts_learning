@@ -8,3 +8,10 @@ export interface IFromItem {
   options?: any[];
   otherOptions?: any;
 }
+export interface IForm {
+  formItems?: IFromItem[];
+  labelWidth?: string;
+  colLayout?: any;
+  itemLayout?: any;
+  itemStyle?: any;
+}
