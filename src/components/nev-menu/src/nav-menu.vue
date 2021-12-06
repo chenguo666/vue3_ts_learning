@@ -11,7 +11,7 @@
       :collapse="collapse"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
-      default-active="$router.path"
+      :default-active="defaultValue"
     >
       <template v-for="item in userMenus" :key="item.id">
         <!-- 二级菜单 -->
@@ -47,10 +47,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 // import { useStore } from 'vuex';
 import { useStore } from '@/store';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { pathMapToMenu } from '@/utils/map-menu';
 export default defineComponent({
   props: {
     collapse: {
@@ -61,6 +62,7 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
     const userMenus = computed(() => store.state.login.userMenu);
     const handleMenuItemClick = (item: any) => {
       // console.log(item);
@@ -68,8 +70,12 @@ export default defineComponent({
         path: item.url ?? '/not-found'
       });
     };
+    const currentPath = route.path;
+    const menu = pathMapToMenu(userMenus.value, currentPath);
+    const defaultValue = ref(menu.id + '');
     return {
       userMenus,
+      defaultValue,
       handleMenuItemClick
     };
   }
