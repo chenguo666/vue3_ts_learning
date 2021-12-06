@@ -11,6 +11,7 @@
       :collapse="collapse"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
+      default-active="$router.path"
     >
       <template v-for="item in userMenus" :key="item.id">
         <!-- 二级菜单 -->

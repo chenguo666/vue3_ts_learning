@@ -13,8 +13,8 @@ import { globalRegister } from './global';
 
 const app = createApp(App);
 app.use(globalRegister);
-app.use(store).use(router);
 setupStore();
+app.use(store).use(router);
 app.mount('#app');
 // interface DataType {
 //   data: any;
