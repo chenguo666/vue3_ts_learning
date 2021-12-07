@@ -6,16 +6,19 @@ export const formConfig: IForm = {
   },
   formItems: [
     {
+      field: 'userName',
       label: '用户名',
       type: 'input',
       placeholder: '请输入用户名'
     },
     {
+      field: 'passWord',
       label: '密码',
       type: 'password',
       placeholder: '请输入密码'
     },
     {
+      field: 'sport',
       label: '运动',
       type: 'select',
       placeholder: '请选择运动',
@@ -31,6 +34,7 @@ export const formConfig: IForm = {
       ]
     },
     {
+      field: 'createTime',
       label: '创建时间',
       type: 'datepicker',
       otherOptions: {

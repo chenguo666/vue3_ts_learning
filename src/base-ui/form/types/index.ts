@@ -2,7 +2,7 @@ type IFormType = 'input' | 'password' | 'select' | 'datepicker';
 export interface IFromItem {
   label: string;
   type: IFormType;
-
+  field: string;
   rules?: any[];
   placeholder?: any;
   options?: any[];

@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    'vue/no-template-key': 'off'
+    'vue/no-template-key': 'off',
+    'vue/no-mutating-props': 'off',
   }
 };

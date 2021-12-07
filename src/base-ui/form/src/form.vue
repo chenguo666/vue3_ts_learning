@@ -11,10 +11,15 @@
                 <el-input
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
+                  v-model="formData[`${item.field}`]"
                 ></el-input>
               </template>
               <template v-else-if="item.type === 'select'">
-                <el-select :placeholder="item.placeholder" style="width: 100%">
+                <el-select
+                  :placeholder="item.placeholder"
+                  style="width: 100%"
+                  v-model="formData[`${item.field}`]"
+                >
                   <el-option
                     v-for="opt in item.options"
                     :key="opt.value"
@@ -25,6 +30,7 @@
               </template>
               <template v-else-if="item.type === 'datepicker'">
                 <el-date-picker
+                  v-model="formData[`${item.field}`]"
                   style="width: 100%"
                   v-bind="item.otherOptions"
                 ></el-date-picker>
@@ -38,11 +44,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
+import { defineComponent, PropType, ref, watch } from 'vue';
 import { IFromItem } from '../types';
 export default defineComponent({
   name: 'dashboard',
   props: {
+    modelValue: {
+      type: Object,
+      require: true
+    },
     formItems: {
       type: Array as PropType<IFromItem[]>,
       default: () => []
@@ -66,8 +76,21 @@ export default defineComponent({
       })
     }
   },
-  setup() {
-    return {};
+  emits: ['update:modelValue'],
+  setup(props, { emit }) {
+    const formData = ref({ ...props.modelValue });
+    watch(
+      formData,
+      (newValue) => {
+        emit('update:modelValue', newValue);
+      },
+      {
+        deep: true
+      }
+    );
+    return {
+      formData
+    };
   }
 });
 </script>
