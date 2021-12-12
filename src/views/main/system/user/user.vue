@@ -9,6 +9,9 @@
         <template #createAt="scope">
           <h2>{{ scope.row.createAt }}</h2>
         </template>
+        <template #updateAt="scope">
+          <h2>{{ scope.row.createAt }}</h2>
+        </template>
       </hy-table>
     </div>
   </div>
