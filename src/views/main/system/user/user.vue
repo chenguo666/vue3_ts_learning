@@ -4,13 +4,19 @@
     <div class="content">
       <hy-table :userList="userList" :propList="propList">
         <template #enable="scope">
-          <h2>{{ scope.row.enable ? '启用' : '禁用' }}</h2>
+          <el-button
+            plain
+            size="mini"
+            :type="scope.row.enable ? 'success' : 'danger'"
+          >
+            {{ scope.row.enable ? '启用' : '禁用' }}
+          </el-button>
         </template>
         <template #createAt="scope">
-          <h2>{{ scope.row.createAt }}</h2>
+          <h2>{{ $filter.formatTime(scope.row.createAt) }}</h2>
         </template>
         <template #updateAt="scope">
-          <h2>{{ scope.row.createAt }}</h2>
+          <h2>{{ $filter.formatTime(scope.row.updateAt) }}</h2>
         </template>
       </hy-table>
     </div>
