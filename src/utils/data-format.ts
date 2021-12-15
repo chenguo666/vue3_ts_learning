@@ -8,3 +8,9 @@ export function formatUtcString(
 ) {
   return dayjs.utc(utcString).format(format);
 }
+export function moramtTimeStamp(
+  timestamp: number,
+  format: string = DATE_TIME_FORMAT
+) {
+  return '';
+}

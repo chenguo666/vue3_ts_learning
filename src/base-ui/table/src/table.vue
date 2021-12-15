@@ -1,6 +1,26 @@
 <template>
   <div class="hy-table">
-    <el-table :data="userList" border style="width: 100%">
+    <el-table
+      @selection-change="handleSelectChange"
+      :data="userList"
+      border
+      style="width: 100%"
+    >
+      <el-table-column
+        v-if="showSelectColumn"
+        type="selection"
+        align="center"
+        width="60"
+      >
+      </el-table-column>
+      <el-table-column
+        v-if="showIndexColumn"
+        type="index"
+        label="序号"
+        align="center"
+        width="80"
+      >
+      </el-table-column>
       <template v-for="propItem in propList" :key="propItem.prop">
         <el-table-column
           :prop="propItem.prop"
@@ -31,11 +51,27 @@ export default defineComponent({
     propList: {
       type: Array,
       require: true
+    },
+    showIndexColumn: {
+      type: Boolean,
+      require: true,
+      default: false
+    },
+    showSelectColumn: {
+      type: Boolean,
+      require: true,
+      default: false
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'selectChange'],
   setup(props, { emit }) {
-    return {};
+    const handleSelectChange = (value: any) => {
+      emit('selectChange', value);
+      console.log(value);
+    };
+    return {
+      handleSelectChange
+    };
   }
 });
 </script>

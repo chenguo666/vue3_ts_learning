@@ -2,7 +2,13 @@
   <div class="user">
     <page-search :formConfig="formConfig" />
     <div class="content">
-      <hy-table :userList="userList" :propList="propList">
+      <hy-table
+        :showSelectColumn="showSelectColumn"
+        :showIndexColumn="showIndexColumn"
+        :userList="userList"
+        :propList="propList"
+        @selectChange="selectChange"
+      >
         <template #enable="scope">
           <el-button
             plain
@@ -17,6 +23,16 @@
         </template>
         <template #updateAt="scope">
           <h2>{{ $filter.formatTime(scope.row.updateAt) }}</h2>
+        </template>
+        <template #handler>
+          <div class="handle-btns">
+            <el-button icon="el-icon-edit" type="text" size="mini"
+              >编辑</el-button
+            >
+            <el-button icon="el-icon-delete" type="text" size="mini"
+              >删除</el-button
+            >
+          </div>
         </template>
       </hy-table>
     </div>
@@ -64,20 +80,34 @@ export default defineComponent({
       {
         prop: 'createAt',
         label: '创建时间',
-        minWidth: '250',
+        minWidth: '100',
         slotName: 'createAt'
       },
       {
         prop: 'updateAt',
         label: '更新时间',
-        minWidth: '250',
+        minWidth: '100',
         slotName: 'updateAt'
+      },
+      {
+        prop: '操作',
+        label: '操作',
+        minWidth: '120',
+        slotName: 'handler'
       }
     ];
+    const showIndexColumn = true;
+    const showSelectColumn = true;
+    const selectChange = (e: any) => {
+      console.log('e', e);
+    };
     return {
       formConfig,
       userList,
-      propList
+      propList,
+      showIndexColumn,
+      showSelectColumn,
+      selectChange
     };
   }
 });
