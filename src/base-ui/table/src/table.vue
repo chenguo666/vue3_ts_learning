@@ -1,5 +1,13 @@
 <template>
   <div class="hy-table">
+    <div class="header">
+      <slot name="header">
+        <div class="title">{{ title }}</div>
+        <div class="handler">
+          <slot name="headerHandler"></slot>
+        </div>
+      </slot>
+    </div>
     <el-table
       @selection-change="handleSelectChange"
       :data="userList"
@@ -36,6 +44,20 @@
         </el-table-column>
       </template>
     </el-table>
+    <div class="footer" v-if="showFooter">
+      <slot name="footer">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="page.currentPage"
+          :page-size="page.pageSize"
+          :total="totalCount"
+          :page-sizes="[10, 20, 30, 40]"
+          layout="total, sizes, prev, pager, next, jumper"
+        >
+        </el-pagination>
+      </slot>
+    </div>
   </div>
 </template>
 
@@ -44,6 +66,10 @@ import { defineComponent, ref, watch } from 'vue';
 export default defineComponent({
   name: 'dashboard',
   props: {
+    title: {
+      type: String,
+      default: ''
+    },
     userList: {
       type: Array,
       require: true

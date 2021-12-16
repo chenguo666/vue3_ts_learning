@@ -3,12 +3,19 @@
     <page-search :formConfig="formConfig" />
     <div class="content">
       <hy-table
+        :title="title"
         :showSelectColumn="showSelectColumn"
         :showIndexColumn="showIndexColumn"
         :userList="userList"
         :propList="propList"
         @selectChange="selectChange"
       >
+        <!-- header -->
+        <template #headerHandler>
+          <el-button type="primary" size="medium"> 新建数据 </el-button>
+        </template>
+
+        <!-- 列中 -->
         <template #enable="scope">
           <el-button
             plain
@@ -96,12 +103,14 @@ export default defineComponent({
         slotName: 'handler'
       }
     ];
+    const title = '用户列表';
     const showIndexColumn = true;
     const showSelectColumn = true;
     const selectChange = (e: any) => {
       console.log('e', e);
     };
     return {
+      title,
       formConfig,
       userList,
       propList,
@@ -113,11 +122,35 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .user {
 }
 .content {
   padding: 20px;
   border-top: 20px solid #f5f5f5;
+}
+.header {
+  display: flex;
+  height: 45px;
+  padding: 0 5px;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .handler {
+    align-items: center;
+  }
+}
+
+.footer {
+  margin-top: 15px;
+
+  .el-pagination {
+    text-align: right;
+  }
 }
 </style>
