@@ -8,7 +8,7 @@
       </template>
       <template #footer>
         <div class="footer">
-          <el-button type="primary">重置</el-button>
+          <el-button type="primary" @click="handleRestClick">重置</el-button>
           <el-button type="success">搜索</el-button>
         </div>
       </template>
@@ -28,15 +28,25 @@ export default defineComponent({
       require: true
     }
   },
-  setup() {
-    const formData = ref({
-      userName: '',
-      passWord: '',
-      sport: '',
-      createTime: ''
-    });
+  setup(props) {
+    const formItem = props.formConfig?.formItems ?? [];
+    const formOrignData = {};
+    for (const item of formItem) {
+      formOrignData[item.field] = '';
+    }
+    const formData = ref(formOrignData);
+    // const formData = ref({
+    //   userName: '',
+    //   passWord: '',
+    //   sport: '',
+    //   createTime: ''
+    // });
+    const handleRestClick = () => {
+      formData.value = formOrignData;
+    };
     return {
-      formData
+      formData,
+      handleRestClick
     };
   }
 });

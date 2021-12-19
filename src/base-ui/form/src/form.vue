@@ -85,6 +85,7 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     const formData = ref({ ...props.modelValue });
+    // TODO 还有问题 双向绑定
     watch(
       formData,
       (newValue) => {
@@ -92,6 +93,12 @@ export default defineComponent({
       },
       {
         deep: true
+      }
+    );
+    watch(
+      () => props.modelValue,
+      (newValue) => {
+        formData.value = { ...newValue };
       }
     );
     return {

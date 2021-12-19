@@ -32,11 +32,8 @@ const systemModule: Module<ISystemState, IRootState> = {
         switch (pageName) {
           case 'User':
             return state.userList;
-            break;
           case 'Role':
             return state.roleList;
-            break;
-
           default:
             break;
         }
@@ -47,6 +44,7 @@ const systemModule: Module<ISystemState, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       console.log(payload);
       const pageName = payload.pageName;
+      // const pageUrl = `/${pageName}/list`;
       let pageUrl = '';
       switch (pageName) {
         case 'User':
