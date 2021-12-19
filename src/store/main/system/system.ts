@@ -6,37 +6,38 @@ const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
   state() {
     return {
-      userList: [],
+      usersList: [],
       userCount: 0,
       roleList: [],
       roleCount: 0
     };
   },
   mutations: {
-    changeUserList(state, userList: any[]) {
-      state.userList = userList;
+    changeusersList(state, usersList: any[]) {
+      state.usersList = usersList;
     },
-    changeUserCount(state, userCount: number) {
+    changeuserCount(state, userCount: number) {
       state.userCount = userCount;
     },
-    changeRoleList(state, roleList: any[]) {
+    changeroleList(state, roleList: any[]) {
       state.roleList = roleList;
     },
-    changeRoleCount(state, roleCount: number) {
+    changeroleCount(state, roleCount: number) {
       state.roleCount = roleCount;
     }
   },
   getters: {
     pageListData(state) {
       return (pageName: string) => {
-        switch (pageName) {
-          case 'User':
-            return state.userList;
-          case 'Role':
-            return state.roleList;
-          default:
-            break;
-        }
+        return (state as any)[`${pageName}List`];
+        // switch (pageName) {
+        //   case 'User':
+        //     return state.userList;
+        //   case 'Role':
+        //     return state.roleList;
+        //   default:
+        //     break;
+        // }
       };
     }
   },
@@ -44,18 +45,18 @@ const systemModule: Module<ISystemState, IRootState> = {
     async getPageListAction({ commit }, payload: any) {
       console.log(payload);
       const pageName = payload.pageName;
-      // const pageUrl = `/${pageName}/list`;
-      let pageUrl = '';
-      switch (pageName) {
-        case 'User':
-          pageUrl = '/users/list';
-          break;
-        case 'Role':
-          pageUrl = '/role/list';
-          break;
-        default:
-          break;
-      }
+      const pageUrl = `/${pageName}/list`;
+      // let pageUrl = '';
+      // switch (pageName) {
+      //   case 'User':
+      //     pageUrl = '/users/list';
+      //     break;
+      //   case 'Role':
+      //     pageUrl = '/role/list';
+      //     break;
+      //   default:
+      //     break;
+      // }
       const pageResult = await getPageListData(pageUrl, payload.queryInfo);
 
       // console.log(pageResult);

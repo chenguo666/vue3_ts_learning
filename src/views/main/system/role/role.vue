@@ -3,7 +3,7 @@
     <page-search :formConfig="formConfig" />
     <page-content
       :contentTableConfig="contentTableConfig"
-      pageName="Role"
+      pageName="role"
     ></page-content>
   </div>
 </template>
