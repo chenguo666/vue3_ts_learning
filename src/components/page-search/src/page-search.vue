@@ -9,7 +9,7 @@
       <template #footer>
         <div class="footer">
           <el-button type="primary" @click="handleRestClick">重置</el-button>
-          <el-button type="success">搜索</el-button>
+          <el-button type="success" @click="handleQueryClick">搜索</el-button>
         </div>
       </template>
     </hy-form>
@@ -28,7 +28,8 @@ export default defineComponent({
       require: true
     }
   },
-  setup(props) {
+  emits: ['resetBtnClick', 'queryBntClick'],
+  setup(props, { emit }) {
     const formItem = props.formConfig?.formItems ?? [];
     const formOrignData = {};
     for (const item of formItem) {
@@ -42,11 +43,20 @@ export default defineComponent({
     //   createTime: ''
     // });
     const handleRestClick = () => {
-      formData.value = formOrignData;
+      for (const key in formOrignData) {
+        formData.value[`${key}`] = formOrignData[key];
+      }
+      emit('resetBtnClick');
+      // formData.value = formOrignData;
+    };
+    const handleQueryClick = () => {
+      console.log(111);
+      emit('queryBntClick', formData.value);
     };
     return {
       formData,
-      handleRestClick
+      handleRestClick,
+      handleQueryClick
     };
   }
 });

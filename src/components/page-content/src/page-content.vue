@@ -20,10 +20,10 @@
         </el-button>
       </template>
       <template #createAt="scope">
-        <h2>{{ $filter.formatTime(scope.row.createAt) }}</h2>
+        <span>{{ $filter.formatTime(scope.row.createAt) }}</span>
       </template>
       <template #updateAt="scope">
-        <h2>{{ $filter.formatTime(scope.row.updateAt) }}</h2>
+        <span>{{ $filter.formatTime(scope.row.updateAt) }}</span>
       </template>
       <template #handler>
         <div class="handle-btns">
@@ -58,19 +58,24 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    store.dispatch('system/getPageListAction', {
-      pageName: props.pageName,
-      queryInfo: {
-        offset: 1,
-        size: 10
-      }
-    });
+    const getPageData = (queryInfo: any = {}) => {
+      store.dispatch('system/getPageListAction', {
+        pageName: props.pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10,
+          ...queryInfo
+        }
+      });
+    };
+    getPageData();
     // const userList = computed(() => store.state.system.userList);
     const userList = computed(() =>
       store.getters[`system/pageListData`](props.pageName)
     );
     return {
-      userList
+      userList,
+      getPageData
     };
   }
 });

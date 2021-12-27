@@ -6,35 +6,41 @@ export const formConfig: IForm = {
   },
   formItems: [
     {
-      field: 'userName',
+      field: 'name',
       label: '用户名',
       type: 'input',
       placeholder: '请输入用户名'
     },
     {
-      field: 'passWord',
-      label: '密码',
-      type: 'password',
-      placeholder: '请输入密码'
+      field: 'realname',
+      label: '真实姓名',
+      type: 'input',
+      placeholder: '请输入真实姓名'
     },
     {
-      field: 'sport',
-      label: '运动',
+      field: 'cellphone',
+      label: '电话号码',
+      type: 'input',
+      placeholder: '请输入电话号码'
+    },
+    {
+      field: 'enable',
+      label: '用户状态',
       type: 'select',
-      placeholder: '请选择运动',
+      placeholder: '请选择用户状态',
       options: [
         {
-          title: '篮球',
-          value: 'basketball'
+          title: '启用',
+          value: 1
         },
         {
-          title: '足球',
-          value: 'football'
+          title: '禁用',
+          value: 0
         }
       ]
     },
     {
-      field: 'createTime',
+      field: 'createAt',
       label: '创建时间',
       type: 'datepicker',
       otherOptions: {
