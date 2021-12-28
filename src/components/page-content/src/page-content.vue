@@ -4,6 +4,8 @@
       v-bind="contentTableConfig"
       :userList="userList"
       @selectChange="selectChange"
+      :listCount="dataCount"
+      v-model:page="pageInfo"
     >
       <!-- header -->
       <template #headerHandler>
@@ -39,7 +41,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref, watch } from 'vue';
 import { useStore } from '@/store';
 import HyTable from '@/base-ui/table';
 export default defineComponent({
@@ -58,12 +60,18 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    //
+    const pageInfo = ref({
+      currentPage: 1,
+      pageSize: 10
+    });
+    watch(pageInfo, () => getPageData());
     const getPageData = (queryInfo: any = {}) => {
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
-          offset: 0,
-          size: 10,
+          offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
           ...queryInfo
         }
       });
@@ -73,9 +81,14 @@ export default defineComponent({
     const userList = computed(() =>
       store.getters[`system/pageListData`](props.pageName)
     );
+    const dataCount = computed(() =>
+      store.getters[`system/pageListCount`](props.pageName)
+    );
     return {
       userList,
-      getPageData
+      getPageData,
+      dataCount,
+      pageInfo
     };
   }
 });

@@ -44,15 +44,15 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer" v-if="showFooter">
+    <div class="footer">
       <slot name="footer">
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="page.currentPage"
           :page-size="page.pageSize"
-          :total="totalCount"
-          :page-sizes="[10, 20, 30, 40]"
+          :total="listCount"
+          :page-sizes="[10, 20, 30]"
           layout="total, sizes, prev, pager, next, jumper"
         >
         </el-pagination>
@@ -87,16 +87,39 @@ export default defineComponent({
       type: Boolean,
       require: true,
       default: false
+    },
+    listCount: {
+      type: Number,
+      default: 0
+    },
+    page: {
+      type: Object,
+      default: () => ({
+        currentPage: 0,
+        pageSize: 10
+      })
     }
   },
-  emits: ['update:modelValue', 'selectChange'],
+  emits: ['update:modelValue', 'selectChange', 'update:page'],
   setup(props, { emit }) {
     const handleSelectChange = (value: any) => {
       emit('selectChange', value);
       console.log(value);
     };
+    console.log(props.listCount);
+
+    const handleCurrentChange = (currentPage: number) => {
+      console.log(1);
+      emit('update:page', { ...props.page, currentPage });
+    };
+    const handleSizeChange = (pageSize: number) => {
+      console.log(1);
+      emit('update:page', { ...props.page, pageSize });
+    };
     return {
-      handleSelectChange
+      handleSelectChange,
+      handleCurrentChange,
+      handleSizeChange
     };
   }
 });

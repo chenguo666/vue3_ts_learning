@@ -7,7 +7,7 @@ const systemModule: Module<ISystemState, IRootState> = {
   state() {
     return {
       usersList: [],
-      userCount: 0,
+      usersCount: 0,
       roleList: [],
       roleCount: 0
     };
@@ -16,8 +16,8 @@ const systemModule: Module<ISystemState, IRootState> = {
     changeusersList(state, usersList: any[]) {
       state.usersList = usersList;
     },
-    changeuserCount(state, userCount: number) {
-      state.userCount = userCount;
+    changeusersCount(state, usersCount: number) {
+      state.usersCount = usersCount;
     },
     changeroleList(state, roleList: any[]) {
       state.roleList = roleList;
@@ -30,14 +30,11 @@ const systemModule: Module<ISystemState, IRootState> = {
     pageListData(state) {
       return (pageName: string) => {
         return (state as any)[`${pageName}List`];
-        // switch (pageName) {
-        //   case 'User':
-        //     return state.userList;
-        //   case 'Role':
-        //     return state.roleList;
-        //   default:
-        //     break;
-        // }
+      };
+    },
+    pageListCount(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}Count`];
       };
     }
   },
@@ -46,23 +43,11 @@ const systemModule: Module<ISystemState, IRootState> = {
       console.log(payload);
       const pageName = payload.pageName;
       const pageUrl = `/${pageName}/list`;
-      // let pageUrl = '';
-      // switch (pageName) {
-      //   case 'User':
-      //     pageUrl = '/users/list';
-      //     break;
-      //   case 'Role':
-      //     pageUrl = '/role/list';
-      //     break;
-      //   default:
-      //     break;
-      // }
       const pageResult = await getPageListData(pageUrl, payload.queryInfo);
 
       // console.log(pageResult);
       const { list, totalCount } = pageResult;
       // console.log(list, totalCount);
-
       commit(`change${pageName}List`, list);
       commit(`change${pageName}Count`, totalCount);
     }
