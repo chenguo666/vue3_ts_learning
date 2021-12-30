@@ -37,6 +37,16 @@
           >
         </div>
       </template>
+      <!-- pagecontent 动态插入 -->
+      <template
+        #[item.slotName]="scope"
+        v-for="item in otherPropSlots"
+        :key="item.prop"
+      >
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>
+        </template>
+      </template>
     </hy-table>
   </div>
 </template>
@@ -84,11 +94,22 @@ export default defineComponent({
     const dataCount = computed(() =>
       store.getters[`system/pageListCount`](props.pageName)
     );
+    // 获取其他的slot
+    const otherPropSlots = props.contentTableConfig?.propList.filter(
+      (item: any) => {
+        if (item.slotName === 'status') return false;
+        if (item.slotName === 'createAt') return false;
+        if (item.slotName === 'updateAt') return false;
+        if (item.slotName === 'handler') return false;
+        return true;
+      }
+    );
     return {
       userList,
       getPageData,
       dataCount,
-      pageInfo
+      pageInfo,
+      otherPropSlots
     };
   }
 });
