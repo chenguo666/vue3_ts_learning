@@ -9,7 +9,9 @@
     >
       <!-- header -->
       <template #headerHandler>
-        <el-button type="primary" size="medium"> 新建数据 </el-button>
+        <el-button v-if="isCreate" type="primary" size="medium">
+          新建数据
+        </el-button>
       </template>
       <!-- 列中 -->
       <template #enable="scope">
@@ -29,10 +31,14 @@
       </template>
       <template #handler>
         <div class="handle-btns">
-          <el-button icon="el-icon-edit" type="text" size="mini"
+          <el-button v-if="isUpdate" icon="el-icon-edit" type="text" size="mini"
             >编辑</el-button
           >
-          <el-button icon="el-icon-delete" type="text" size="mini"
+          <el-button
+            v-if="isDelete"
+            icon="el-icon-delete"
+            type="text"
+            size="mini"
             >删除</el-button
           >
         </div>
@@ -53,16 +59,17 @@
 <script lang="ts">
 import { defineComponent, computed, ref, watch } from 'vue';
 import { useStore } from '@/store';
+import { usePermission } from '@/hooks/usePermission';
 import HyTable from '@/base-ui/table';
 export default defineComponent({
   props: {
     contentTableConfig: {
       type: Object,
-      require: true
+      required: true
     },
     pageName: {
       type: String,
-      require: true
+      required: true
     }
   },
   components: {
@@ -70,6 +77,13 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    console.log('props', props.pageName);
+
+    const isCreate = usePermission(props.pageName, 'create');
+    const isUpdate = usePermission(props.pageName, 'update');
+    const isDelete = usePermission(props.pageName, 'delete');
+    const isQuery = usePermission(props.pageName, 'query');
+
     //
     const pageInfo = ref({
       currentPage: 1,
@@ -77,6 +91,7 @@ export default defineComponent({
     });
     watch(pageInfo, () => getPageData());
     const getPageData = (queryInfo: any = {}) => {
+      if (!isQuery) return;
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
@@ -109,7 +124,10 @@ export default defineComponent({
       getPageData,
       dataCount,
       pageInfo,
-      otherPropSlots
+      otherPropSlots,
+      isCreate,
+      isUpdate,
+      isDelete
     };
   }
 });

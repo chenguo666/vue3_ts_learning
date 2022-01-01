@@ -13,7 +13,10 @@
       :data="userList"
       border
       style="width: 100%"
+      v-bind="childrenProps"
     >
+      <!-- row-key="id"
+      :tree-props="{children:'children'}" -->
       <el-table-column
         v-if="showSelectColumn"
         type="selection"
@@ -45,7 +48,7 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer">
+    <div class="footer" v-if="showFooter">
       <slot name="footer">
         <el-pagination
           @size-change="handleSizeChange"
@@ -73,20 +76,20 @@ export default defineComponent({
     },
     userList: {
       type: Array,
-      require: true
+      required: true
     },
     propList: {
       type: Array,
-      require: true
+      required: true
     },
     showIndexColumn: {
       type: Boolean,
-      require: true,
+      required: true,
       default: false
     },
     showSelectColumn: {
       type: Boolean,
-      require: true,
+      required: true,
       default: false
     },
     listCount: {
@@ -99,6 +102,14 @@ export default defineComponent({
         currentPage: 0,
         pageSize: 10
       })
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    showFooter: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['update:modelValue', 'selectChange', 'update:page'],
