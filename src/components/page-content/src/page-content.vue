@@ -29,7 +29,7 @@
       <template #updateAt="scope">
         <span>{{ $filter.formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handle-btns">
           <el-button v-if="isUpdate" icon="el-icon-edit" type="text" size="mini"
             >编辑</el-button
@@ -38,6 +38,7 @@
             v-if="isDelete"
             icon="el-icon-delete"
             type="text"
+            @click="handleDeleteClick(scope.row)"
             size="mini"
             >删除</el-button
           >
@@ -119,6 +120,14 @@ export default defineComponent({
         return true;
       }
     );
+    // 删除
+    const handleDeleteClick = (item: any) => {
+      console.log(item);
+      store.dispatch('system/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      });
+    };
     return {
       userList,
       getPageData,
@@ -127,7 +136,8 @@ export default defineComponent({
       otherPropSlots,
       isCreate,
       isUpdate,
-      isDelete
+      isDelete,
+      handleDeleteClick
     };
   }
 });

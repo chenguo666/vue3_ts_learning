@@ -1,7 +1,7 @@
 import { Module } from 'vuex';
 import { ISystemState } from './types';
 import { IRootState } from '@/store/types';
-import { getPageListData } from '@/service/main/system/system';
+import { getPageListData, deletePageData } from '@/service/main/system/system';
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
   state() {
@@ -66,6 +66,18 @@ const systemModule: Module<ISystemState, IRootState> = {
       // console.log(list, totalCount);
       commit(`change${pageName}List`, list);
       commit(`change${pageName}Count`, totalCount);
+    },
+    async deletePageDataAction({ dispatch }, payload: any) {
+      const { pageName, id } = payload;
+      const pageUrl = `/${pageName}/${id}`;
+      await deletePageData(pageUrl);
+      dispatch('system/getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      });
     }
   }
 };
