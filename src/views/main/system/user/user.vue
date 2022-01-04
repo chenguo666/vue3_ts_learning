@@ -11,21 +11,26 @@
         pageName="users"
         :contentTableConfig="contentTableConfig"
       ></page-content>
+      <page-model :modelConfig="modelConfig"></page-model>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+
 import PageSearch from '@/components/page-search';
 import PageContent from '@/components/page-content';
+import PageModel from '@/components/page-model';
 import { formConfig } from './config/search.config';
+import { modelConfig } from './config/model-config';
 import { contentTableConfig } from './config/content-config';
 import { usePageSearch } from '@/hooks/usePageSearch';
 export default defineComponent({
   name: 'user',
   components: {
     PageSearch,
-    PageContent
+    PageContent,
+    PageModel
   },
   setup() {
     const [pageContent, handleQueryClick, handleResetClick] = usePageSearch();
@@ -34,7 +39,8 @@ export default defineComponent({
       pageContent,
       contentTableConfig,
       handleResetClick,
-      handleQueryClick
+      handleQueryClick,
+      modelConfig
     };
   }
 });

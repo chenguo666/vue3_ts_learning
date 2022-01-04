@@ -1,6 +1,6 @@
 import { IForm } from '@/base-ui/form';
 export const formConfig: IForm = {
-  labelWidth: '120px',
+  labelWidth: '80px',
   itemStyle: {
     padding: '20px 40px'
   },
