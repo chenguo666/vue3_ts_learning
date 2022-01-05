@@ -41,8 +41,20 @@ export default defineComponent({
   },
   setup() {
     const [pageContent, handleQueryClick, handleResetClick] = usePageSearch();
+    const newCallback = () => {
+      const passwordItem = modelConfig.formItems.find(
+        (item) => item.field === 'password'
+      );
+      passwordItem!.isHidden = false;
+    };
+    const editCallback = () => {
+      const passwordItem = modelConfig.formItems.find(
+        (item) => item.field === 'password'
+      );
+      passwordItem!.isHidden = true;
+    };
     const [pageModelRef, defaultInfo, handleEditData, handleNewData] =
-      usePageModel();
+      usePageModel(newCallback, editCallback);
 
     return {
       formConfig,

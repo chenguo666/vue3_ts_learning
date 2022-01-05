@@ -7,6 +7,7 @@ export interface IFromItem {
   placeholder?: any;
   options?: any[];
   otherOptions?: any;
+  isHidden?: boolean;
 }
 export interface IForm {
   formItems?: IFromItem[];
