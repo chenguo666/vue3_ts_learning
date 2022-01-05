@@ -1,5 +1,5 @@
 <template>
-  <div class="apge-model">
+  <div class="page-model">
     <el-dialog
       title="新建用户"
       destroy-on-close
@@ -10,15 +10,17 @@
       <hy-form v-bind="modelConfig" v-model="formData"></hy-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button>取 消</el-button>
-          <el-button type="primary">确 定</el-button>
+          <el-button @click="dialogVisable = false">取 消</el-button>
+          <el-button @click="dialogVisable = false" type="primary"
+            >确 定</el-button
+          >
         </span>
       </template>
     </el-dialog>
   </div>
 </template>
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import HyForm from '@/base-ui/form';
 export default defineComponent({
   components: {
@@ -28,12 +30,24 @@ export default defineComponent({
     modelConfig: {
       type: Object,
       required: true
+    },
+    defaultInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
   setup(props, { emit }) {
-    const dialogVisable = ref(true);
+    const dialogVisable = ref(false);
     console.log(props.modelConfig);
     const formData = ref({});
+    watch(
+      () => props.defaultInfo,
+      (newValue) => {
+        for (const item of props.modelConfig.formItems) {
+          formData.value[`${item.field}`] = newValue[`${item.field}`];
+        }
+      }
+    );
     return {
       dialogVisable,
       formData

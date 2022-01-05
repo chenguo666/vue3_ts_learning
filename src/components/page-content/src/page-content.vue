@@ -9,7 +9,12 @@
     >
       <!-- header -->
       <template #headerHandler>
-        <el-button v-if="isCreate" type="primary" size="medium">
+        <el-button
+          v-if="isCreate"
+          type="primary"
+          size="medium"
+          @click="handleNewClick"
+        >
           新建数据
         </el-button>
       </template>
@@ -31,7 +36,12 @@
       </template>
       <template #handler="scope">
         <div class="handle-btns">
-          <el-button v-if="isUpdate" icon="el-icon-edit" type="text" size="mini"
+          <el-button
+            v-if="isUpdate"
+            icon="el-icon-edit"
+            type="text"
+            size="mini"
+            @click="handleEditClick(scope.row)"
             >编辑</el-button
           >
           <el-button
@@ -76,7 +86,8 @@ export default defineComponent({
   components: {
     HyTable
   },
-  setup(props) {
+  emits: ['newBtnClick', 'editBtnClick'],
+  setup(props, { emit }) {
     const store = useStore();
     console.log('props', props.pageName);
 
@@ -128,6 +139,16 @@ export default defineComponent({
         id: item.id
       });
     };
+    // 编辑
+    const handleEditClick = (item: any) => {
+      console.log('edit');
+      emit('editBtnClick', item);
+    };
+    // 新增
+    const handleNewClick = () => {
+      console.log('new');
+      emit('newBtnClick');
+    };
     return {
       userList,
       getPageData,
@@ -137,7 +158,9 @@ export default defineComponent({
       isCreate,
       isUpdate,
       isDelete,
-      handleDeleteClick
+      handleDeleteClick,
+      handleNewClick,
+      handleEditClick
     };
   }
 });

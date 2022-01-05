@@ -1,2 +1,2 @@
-import PageSearch from './src/page-model.vue';
-export default PageSearch;
+import PageModel from './src/page-model.vue';
+export default PageModel;

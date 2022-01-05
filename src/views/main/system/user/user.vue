@@ -10,8 +10,14 @@
         ref="pageContent"
         pageName="users"
         :contentTableConfig="contentTableConfig"
+        @newBtnClick="handleNewData"
+        @editBtnClick="handleEditData"
       ></page-content>
-      <page-model :modelConfig="modelConfig"></page-model>
+      <page-model
+        :defaultInfo="defaultInfo"
+        :modelConfig="modelConfig"
+        ref="pageModelRef"
+      ></page-model>
     </div>
   </div>
 </template>
@@ -25,6 +31,7 @@ import { formConfig } from './config/search.config';
 import { modelConfig } from './config/model-config';
 import { contentTableConfig } from './config/content-config';
 import { usePageSearch } from '@/hooks/usePageSearch';
+import { usePageModel } from '@/hooks/usePageModel';
 export default defineComponent({
   name: 'user',
   components: {
@@ -34,13 +41,20 @@ export default defineComponent({
   },
   setup() {
     const [pageContent, handleQueryClick, handleResetClick] = usePageSearch();
+    const [pageModelRef, defaultInfo, handleEditData, handleNewData] =
+      usePageModel();
+
     return {
       formConfig,
       pageContent,
       contentTableConfig,
       handleResetClick,
       handleQueryClick,
-      modelConfig
+      modelConfig,
+      handleNewData,
+      handleEditData,
+      pageModelRef,
+      defaultInfo
     };
   }
 });
