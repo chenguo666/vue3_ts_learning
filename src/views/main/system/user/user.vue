@@ -15,15 +15,15 @@
       ></page-content>
       <page-model
         :defaultInfo="defaultInfo"
-        :modelConfig="modelConfig"
+        :modelConfig="modelConfigRef"
         ref="pageModelRef"
       ></page-model>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-
+import { defineComponent, ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import PageSearch from '@/components/page-search';
 import PageContent from '@/components/page-content';
 import PageModel from '@/components/page-model';
@@ -53,6 +53,23 @@ export default defineComponent({
       );
       passwordItem!.isHidden = true;
     };
+    const store = useStore();
+    const modelConfigRef = computed(() => {
+      const departmenItem = modelConfig.formItems.find(
+        (item) => item.field === 'departmentId'
+      );
+      const roleItem = modelConfig.formItems.find(
+        (item) => item.field === 'roleId'
+      );
+      console.log('store.state', store.state);
+      departmenItem!.options = store.state.entireDepartment.map((item: any) => {
+        return { title: item.name, value: item.id };
+      });
+      roleItem!.options = store.state.entireRole.map((item: any) => {
+        return { title: item.name, value: item.id };
+      });
+      return modelConfig;
+    });
     const [pageModelRef, defaultInfo, handleEditData, handleNewData] =
       usePageModel(newCallback, editCallback);
 
@@ -66,7 +83,8 @@ export default defineComponent({
       handleNewData,
       handleEditData,
       pageModelRef,
-      defaultInfo
+      defaultInfo,
+      modelConfigRef
     };
   }
 });
