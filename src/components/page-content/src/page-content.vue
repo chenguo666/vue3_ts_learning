@@ -125,6 +125,7 @@ export default defineComponent({
     const otherPropSlots = props.contentTableConfig?.propList.filter(
       (item: any) => {
         if (item.slotName === 'status') return false;
+        if (item.slotName === 'enable') return false;
         if (item.slotName === 'createAt') return false;
         if (item.slotName === 'updateAt') return false;
         if (item.slotName === 'handler') return false;
