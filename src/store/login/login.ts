@@ -42,7 +42,7 @@ const loginModule: Module<ILoginState, IRootState> = {
     }
   },
   actions: {
-    async accountLoginActions({ commit }, payload: IAccount) {
+    async accountLoginActions({ commit, dispatch }, payload: IAccount) {
       console.log('执行accountLoginActions', payload);
       const loginResult = await accountLoginRequest(payload);
       const { id, token } = loginResult;
@@ -61,15 +61,18 @@ const loginModule: Module<ILoginState, IRootState> = {
       console.log(userMenusResult);
       commit('changeUserMenus', userMenusResult);
       localCache.setCache('userMenu', userMenusResult);
+
+      dispatch('getInitialDataAction', null, { root: true });
       // 到首页
       router.push('/main');
     },
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
       const token = localCache.getCache('token');
       const userInfo = localCache.getCache('userInfo');
       const userMenu = localCache.getCache('userMenu');
       if (token) {
         commit('changeToken', token);
+        dispatch('getInitialDataAction', null, { root: true });
       }
       if (userInfo) {
         commit('changeUserInfo', userInfo);

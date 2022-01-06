@@ -43,7 +43,7 @@ const store = createStore<IRootState>({
 });
 export function setupStore() {
   store.dispatch('login/loadLocalLogin');
-  store.dispatch('getInitialDataAction');
+  // store.dispatch('getInitialDataAction');
 }
 export function useStore(): Store<IRootWithModule> {
   return useVuexStore();
