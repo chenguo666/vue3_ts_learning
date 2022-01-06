@@ -11,7 +11,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisable = false">取 消</el-button>
-          <el-button @click="dialogVisable = false" type="primary"
+          <el-button @click="handleConfigrmClick" type="primary"
             >确 定</el-button
           >
         </span>
@@ -22,6 +22,7 @@
 <script>
 import { defineComponent, ref, watch } from 'vue';
 import HyForm from '@/base-ui/form';
+import { useStore } from 'vuex';
 export default defineComponent({
   components: {
     HyForm
@@ -34,12 +35,17 @@ export default defineComponent({
     defaultInfo: {
       type: Object,
       default: () => ({})
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
   setup(props, { emit }) {
     const dialogVisable = ref(false);
     console.log(props.modelConfig);
     const formData = ref({});
+    const store = useStore();
     watch(
       () => props.defaultInfo,
       (newValue) => {
@@ -48,9 +54,25 @@ export default defineComponent({
         }
       }
     );
+    const handleConfigrmClick = () => {
+      dialogVisable.value = false;
+      if (Object.keys(props.defaultInfo).length) {
+        store.dispatch('system/editPageDataAction', {
+          pageName: props.pageName,
+          newData: { ...formData.value },
+          id: props.defaultInfo.id
+        });
+      } else {
+        store.dispatch('system/createPageDataAction', {
+          pageName: props.pageName,
+          editData: { ...formData.value }
+        });
+      }
+    };
     return {
       dialogVisable,
-      formData
+      formData,
+      handleConfigrmClick
     };
   }
 });
