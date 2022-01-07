@@ -10,14 +10,25 @@
     <page-model
       :defaultInfo="defaultInfo"
       :modelConfig="modelConfig"
+      :otherInfo="otherInfo"
       pageName="role"
       ref="pageModelRef"
-    ></page-model>
+    >
+      <div class="menu-tree">
+        <el-tree
+          :data="menus"
+          show-checkbox
+          node-key="id"
+          :props="{ children: 'children', label: 'name' }"
+          @check="handleCheckChange"
+        />
+      </div>
+    </page-model>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import PageModel from '@/components/page-model';
 import { modelConfig } from './config/model-config';
 import PageContent from '@/components/page-content';
@@ -25,6 +36,7 @@ import PageSearch from '@/components/page-search';
 import { contentTableConfig } from './config/content-config';
 import { formConfig } from './config/search.config';
 import { usePageModel } from '@/hooks/usePageModel';
+import { useStore } from 'vuex';
 export default defineComponent({
   name: 'role',
   components: {
@@ -35,6 +47,17 @@ export default defineComponent({
   setup() {
     const [pageModelRef, defaultInfo, handleEditData, handleNewData] =
       usePageModel();
+    const store = useStore();
+    const menus = computed(() => store.state.entireMenu);
+    const otherInfo = ref({});
+    const handleCheckChange = (data1: any, data2: any) => {
+      const checkedKeys = data1.checkedKeys;
+      const halfCheckedKeys = data2.halfCheckedKeys;
+      console.log('data1', data1);
+      console.log('data2', data2);
+      const menuList = [...checkedKeys, ...halfCheckedKeys];
+      otherInfo.value = { menuList };
+    };
     return {
       contentTableConfig,
       formConfig,
@@ -42,10 +65,17 @@ export default defineComponent({
       pageModelRef,
       defaultInfo,
       handleEditData,
-      handleNewData
+      handleNewData,
+      menus,
+      otherInfo,
+      handleCheckChange
     };
   }
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.menu-tree {
+  margin-left: 20px;
+}
+</style>

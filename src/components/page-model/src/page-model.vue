@@ -8,6 +8,7 @@
       center
     >
       <hy-form v-bind="modelConfig" v-model="formData"></hy-form>
+      <slot></slot>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisable = false">取 消</el-button>
@@ -39,6 +40,10 @@ export default defineComponent({
     pageName: {
       type: String,
       required: true
+    },
+    otherInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
   setup(props, { emit }) {
@@ -59,13 +64,13 @@ export default defineComponent({
       if (Object.keys(props.defaultInfo).length) {
         store.dispatch('system/editPageDataAction', {
           pageName: props.pageName,
-          newData: { ...formData.value },
+          newData: { ...formData.value, ...props.otherInfo },
           id: props.defaultInfo.id
         });
       } else {
         store.dispatch('system/createPageDataAction', {
           pageName: props.pageName,
-          editData: { ...formData.value }
+          editData: { ...formData.value, ...props.otherInfo }
         });
       }
     };

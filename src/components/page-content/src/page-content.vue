@@ -3,10 +3,10 @@
     <hy-table
       v-bind="contentTableConfig"
       :userList="userList"
-      @selectChange="selectChange"
       :listCount="dataCount"
       v-model:page="pageInfo"
     >
+      <!-- @selectChange="selectChange" -->
       <!-- header -->
       <template #headerHandler>
         <el-button
