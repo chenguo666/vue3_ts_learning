@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import PageModel from '@/components/page-model';
-type CallbackFn = () => void;
+type CallbackFn = (item?: any) => void;
 export function usePageModel(newCb?: CallbackFn, editCb?: CallbackFn) {
   const pageModelRef = ref<InstanceType<typeof PageModel>>();
   const defaultInfo = ref({});
@@ -10,7 +10,7 @@ export function usePageModel(newCb?: CallbackFn, editCb?: CallbackFn) {
     if (pageModelRef.value) {
       pageModelRef.value.dialogVisable = true;
     }
-    editCb && editCb();
+    editCb && editCb(item);
   };
   const handleNewData = () => {
     console.log('new');

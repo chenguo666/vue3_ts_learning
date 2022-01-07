@@ -16,6 +16,7 @@
     >
       <div class="menu-tree">
         <el-tree
+          ref="leafTree"
           :data="menus"
           show-checkbox
           node-key="id"
@@ -28,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, nextTick, ref } from 'vue';
 import PageModel from '@/components/page-model';
 import { modelConfig } from './config/model-config';
 import PageContent from '@/components/page-content';
@@ -36,7 +37,9 @@ import PageSearch from '@/components/page-search';
 import { contentTableConfig } from './config/content-config';
 import { formConfig } from './config/search.config';
 import { usePageModel } from '@/hooks/usePageModel';
+import { getMenuLeafKeys } from '@/utils/map-menu';
 import { useStore } from 'vuex';
+import { ElTree } from 'element-plus';
 export default defineComponent({
   name: 'role',
   components: {
@@ -45,8 +48,16 @@ export default defineComponent({
     PageModel
   },
   setup() {
+    const leafTree = ref<InstanceType<typeof ElTree>>();
+    const editCallback = (item: any) => {
+      console.log('item', item.menuList);
+      const leafKeys = getMenuLeafKeys(item.menuList);
+      nextTick(() => {
+        leafTree.value?.setCheckedKeys(leafKeys, false);
+      });
+    };
     const [pageModelRef, defaultInfo, handleEditData, handleNewData] =
-      usePageModel();
+      usePageModel(undefined, editCallback);
     const store = useStore();
     const menus = computed(() => store.state.entireMenu);
     const otherInfo = ref({});
@@ -66,7 +77,8 @@ export default defineComponent({
       handleNewData,
       menus,
       otherInfo,
-      handleCheckChange
+      handleCheckChange,
+      leafTree
     };
   }
 });
