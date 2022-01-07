@@ -51,10 +51,8 @@ export default defineComponent({
     const menus = computed(() => store.state.entireMenu);
     const otherInfo = ref({});
     const handleCheckChange = (data1: any, data2: any) => {
-      const checkedKeys = data1.checkedKeys;
+      const checkedKeys = data2.checkedKeys;
       const halfCheckedKeys = data2.halfCheckedKeys;
-      console.log('data1', data1);
-      console.log('data2', data2);
       const menuList = [...checkedKeys, ...halfCheckedKeys];
       otherInfo.value = { menuList };
     };
