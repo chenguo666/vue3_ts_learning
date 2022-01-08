@@ -11,8 +11,13 @@
 12.19 40 
 1.01 41 
 1.06 42 
+1.08 43 
 
 
+
+vue项目 vue版本升级
+npm install vue@next
+npm install @vue/compiler-sfc
 
 
 settings

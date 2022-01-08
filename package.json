@@ -11,9 +11,11 @@
         "commit": "cz"
     },
     "dependencies": {
+        "@types/echarts": "^4.9.12",
         "axios": "^0.24.0",
         "core-js": "^3.6.5",
         "dayjs": "^1.10.7",
+        "echarts": "^5.2.2",
         "element-plus": "^1.0.2-beta.62",
         "normalize.css": "^8.0.1",
         "vue": "^3.2.4",
@@ -31,7 +33,7 @@
         "@vue/cli-plugin-typescript": "~4.5.0",
         "@vue/cli-plugin-vuex": "~4.5.0",
         "@vue/cli-service": "~4.5.0",
-        "@vue/compiler-sfc": "^3.0.0",
+        "@vue/compiler-sfc": "^3.2.26",
         "@vue/eslint-config-prettier": "^6.0.0",
         "@vue/eslint-config-typescript": "^7.0.0",
         "babel-plugin-import": "^1.13.3",
