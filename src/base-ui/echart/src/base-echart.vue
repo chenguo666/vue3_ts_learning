@@ -1,32 +1,31 @@
 <template>
   <div class="base-echart">
-    <div ref="echartDivRef" style="width: 500px; height: 500px"></div>
+    <div ref="echartDivRef" :style="{ width: width, height: height }"></div>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, defineProps, withDefaults, watchEffect } from 'vue';
 import * as echarts from 'echarts';
+import { EChartsOption } from 'echarts';
+import useEchart from '../hooks/useEchart';
 const echartDivRef = ref<HTMLElement>();
+const props = withDefaults(
+  defineProps<{
+    options: EChartsOption;
+    width?: string;
+    height?: string;
+  }>(),
+  {
+    width: '100%',
+    height: '360px'
+  }
+);
+
 onMounted(() => {
-  const echartInstance = echarts.init(echartDivRef.value!);
-  const options = {
-    xAxis: {
-      type: 'category',
-      boundaryGap: false,
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    },
-    yAxis: {
-      type: 'value'
-    },
-    series: [
-      {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
-        type: 'line',
-        areaStyle: {}
-      }
-    ]
-  };
-  echartInstance.setOption(options);
+  const { setOptions } = useEchart(echartDivRef.value!);
+  watchEffect(() => {
+    setOptions(props.options);
+  });
 });
 </script>
 <style></style>

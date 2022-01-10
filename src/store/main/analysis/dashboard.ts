@@ -34,13 +34,13 @@ const dashboardModule: Module<IDashboardState, IRootState> = {
   actions: {
     async getDashboardDataActions({ commit }) {
       const categoryCountResult = await getCategoryGoodsCount();
-      commit('changeCategoryGoodsCount', categoryCountResult.data);
+      commit('changeCategoryGoodsCount', categoryCountResult);
       const categoryGoodsSaleResult = await getCategoryGoodsSale();
-      commit('changeCategoryGoodsSale', categoryGoodsSaleResult.data);
+      commit('changeCategoryGoodsSale', categoryGoodsSaleResult);
       const categoryGoodsFavorResult = await getCategoryGoodsFavor();
-      commit('changeCategoryGoodsFavor', categoryGoodsFavorResult.data);
+      commit('changeCategoryGoodsFavor', categoryGoodsFavorResult);
       const addressGoodsSaleResult = await getAddressGoodsSale();
-      commit('changeAddressGoodsSale', addressGoodsSaleResult.data);
+      commit('changeAddressGoodsSale', addressGoodsSaleResult);
     }
   }
 };
