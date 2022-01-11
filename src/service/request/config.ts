@@ -13,6 +13,7 @@
 // }
 
 // 3.区分环境变量方式三: 加载.env文件
-export const API_BASE_URL = process.env.VUE_APP_BASE_URL;
+// export const API_BASE_URL = process.env.VUE_APP_BASE_URL;
+export const API_BASE_URL = '/api';
 
 export const TIME_OUT = 10000;

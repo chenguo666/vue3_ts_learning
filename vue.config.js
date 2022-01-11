@@ -1,12 +1,23 @@
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
 module.exports = {
   publicPath: './',
+  productionSourceMap: false,
   // 配置方式1
   configureWebpack: {
     resolve: {
       alias: {
         components: '@/component'
       }
-    }
+    },
+    plugins: [
+      new CompressionWebpackPlugin({
+        filename: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: new RegExp('\\.(js|css)$'),
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    ]
     // module: {
     //   rules: [
     //     {

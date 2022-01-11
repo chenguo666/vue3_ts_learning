@@ -3,7 +3,9 @@ import { API_BASE_URL, TIME_OUT } from './request/config';
 import localCache from '../utils/cache';
 
 const hyRequest = new HYRequest({
-  baseURL: API_BASE_URL,
+  // baseURL: API_BASE_URL,
+  // baseURL: '/api',
+  baseURL: 'http://152.136.185.210:4000/',
   timeout: TIME_OUT,
   interceptorHooks: {
     requestInterceptor: (config) => {
